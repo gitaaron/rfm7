@@ -6,6 +6,8 @@
 
   * generate all 6 graphs
 
+* investigate how numpy/matplotlib can be displayed with controls (eg/ selecting regions)
+
 * run probes using two nodes on same LAN but different hosts
 
 * create architecture diagram

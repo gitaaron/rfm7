@@ -41,8 +41,12 @@ def plot():
             (ret.done_retrieving_at - ret.retrieval_started_at).total_seconds()]
 
     hist, bin_edges = np.histogram(
-        overall_retrieval_durations, bins=np.arange(0, 5, 0.1))
-    plt.bar(bin_edges[:-1], hist, width=0.1)
+        overall_retrieval_durations, bins=np.arange(0, 5, 0.1),  density=True)
+
+    dx = bin_edges[1]-bin_edges[0]
+    cdf = np.cumsum(hist)*dx
+
+    plt.plot(bin_edges[:-1], cdf,)
     plt.show()
 
 

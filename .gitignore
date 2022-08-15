@@ -5,3 +5,6 @@ __pycache__
 # vim
 *.swp
 *.swo
+
+# backup  files
+*.bak
