@@ -1,5 +1,7 @@
 # Questions
 
+* verify goal (./proposal.md)
+
 * grant/rfm clarifications
 
   * what am I choosing?
