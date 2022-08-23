@@ -1,5 +1,13 @@
 # Done
 
+* setup ubuntu server so that terraform m1 arch + docker networking is not an issue
+
+  * install from ISO
+
+  * install docker
+
+  * clone ipfs-lookup-measurement repo
+
 ## Friday Aug. 19, 2022
 
 * create dashboard mockup
