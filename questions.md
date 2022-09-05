@@ -1,5 +1,23 @@
 # Questions
 
+* debugging
+
+  * lookup intermittently fails with timeout
+
+    * I see the following log (from kubo) when it fails
+
+    ```
+      In total, got 1 closest peers to cid QmbHb1WdEkswrjKgb7fUKCYSmJa3q2YNWtGMFCcAvWg359 to publish record
+    ```
+
+    * when it succeeds (in this case publish takes much longer)
+
+    ```
+      In total, got 8 closest peers to cid Qmc6GUFZYap1vQapZkDzBfjCQ7QAyHbpPBS6YxtPGbv1yR to publish record
+    ```
+
+--- review below
+
 * verify goal (./proposal.md)
 
 * grant/rfm clarifications
@@ -66,13 +84,37 @@
 
 * after code review
 
-  * is there a way to tell all retrieval events apply to the same event sequence?
-    the same CID could have been requested by different clients
-    ( eg/ line 39-41  in plot_total_retrievals)
+  * dht-lookup-dataset
+    * is there a way to tell all retrieval events apply to the same event sequence?
+      the same CID could have been requested by different clients
+      ( eg/ line 39-41  in plot_total_retrievals)
 
-    * perhaps log an 'attempt ID' ?
+      * perhaps log an 'attempt ID' ?
 
-    * workaround - ensure each CID is attempted only once in each log file and consider each file a single attempt
+      * workaround - ensure each CID is attempted only once in each log file and consider each file a single attempt
 
-  * if 'DONE' is associated with `done_retrieving_at` and `finished_searching_providers_at` does that mean `finished_searching_providers` is only set if no providers were found?
+    * if 'DONE' is associated with `done_retrieving_at` and `finished_searching_providers_at` does that mean `finished_searching_providers` is only set if no providers were found?
 
+  * ipfs-lookup-measurement
+
+    * controller
+
+      * how is 0.5 MB random byte array random if rand.seed is not called in 'simplenode.go'?
+
+  * more-logging
+
+    * certain logs have timestamp at beginning and others do not?
+
+    * perhaps all 'ifLog' logic should be removed and the built in 'logger' could be used?
+
+    * kubo
+
+      * core/node/groups.go
+
+        * why is `bitswap.ProvidedEnabled` overriden as false?
+
+        * why is 'shouldBitswapProvide' set to false?
+
+    * go-bitswap/internal/session/session.go
+        * line 499
+          * why disable when logging is enabled?
