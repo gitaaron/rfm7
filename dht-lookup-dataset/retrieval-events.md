@@ -28,7 +28,7 @@ The following is an ordered sequence of events for retrieval.
   DONE_WITHOUT_ASKING_PEERS = 6
 ```
 
-## State Milestone Mapping
+## Phase -> Milestone Mapping
 
 ```
 {
@@ -40,7 +40,7 @@ The following is an ordered sequence of events for retrieval.
 }
 ```
 
-## Phase Latency Calculation
+## Phase Latency Calculations
 
 ```
 {
@@ -49,5 +49,54 @@ The following is an ordered sequence of events for retrieval.
   DIALING: connected_at - dial_started_at,
   FETCHING: done_retrieving_at - connected_at,
   DONE: done_retrieving_at | finished_searching_providers_at
+}
+```
+
+## Milestone -> Log Mapping
+
+```
+{
+  retrieval_started_at: "${TIMESTAMP}: Start retrieving content for ${CID}",
+  get_providers_queries_started_at: "${TIMESTAMP}: Start searching providers for cid ${CID}",
+  found_first_provider_at: "${TIMESTAMP}: Found provider ${PROVIDER_PEER_ID} for cid ${CID} from ${REMOTE_PEER_ID}(${REMOTE_PEER_AGENT})",
+  dial_started_at: "${TIMESTAMP}: Bitswap connect to peer ${PROVIDER_PEER_ID}",
+  connected_at: "${TIMESTAMP}: Connected to provider ${PROVIDER_PEER_ID}(${PROVIDER_AGENT}) for cid ${CID} from ${POINTER_PEER_ID}(${POINTER_AGENT})",
+  stream_opened_at: "${TIMESTAMP}: Bitswap connected to peer ${PROVIDER_PEER_ID}",
+  received_first_HAVE_at: "${TIMESTAMP}: Got provider ${PROVIDER_PEER_ID} for content ${CID}",
+  done_retrieving_at: "${TIME_STAMP}: Done retrieving content for ${CID} error: ${ERROR_MESSAGE:''}",
+  finished_searching_providers_at: "${TIME_STAMP}: Finish searching providers for cid ${CID} with ctx error: ${ERROR_MESSAGE:''}"
+}
+```
+
+## Regex -> Template Log Mapping
+
+```
+{
+  ([^\s]+): Start retrieving content for ([^\s]+) :
+  ${TIMESTAMP}: Start retrieving content for ${CID},
+
+  ([^\s]+): Start searching providers for cid (\w+) :
+  ${TIMESTAMP}: Start searching providers for cid ${CID},
+
+  ([^\s]+): Found provider (\w+) for cid ([^\s]+) from (\w+)\((.+)\) :
+  ${TIMESTAMP}: Found provider ${PROVIDER_PEER_ID} for cid ${CID} from ${POINTER_PEER_ID}(${POINTER_AGENT}),
+
+  ([^\s]+): Bitswap connect to peer (\w+):
+  ${TIMESTAMP}: Bitswap connect to peer ${PROVIDER_PEER_ID},
+
+  ([^\s]+): Connected to provider (\w+)\((.+)\) for cid ([^\s]+) from (\w+)\((.+)\):
+  ${TIMESTAMP}: Connected to provider ${PROVIDER_PEER_ID}(${PROVIDER_AGENT}) for cid ${CID} from ${POINTER_PEER_ID}(${POINTER_AGENT}),
+
+  ([^\s]+): Bitswap connected to peer (\w+):
+  ${TIMESTAMP}: Bitswap connected to peer ${PROVIDER_PEER_ID},
+
+  ([^\s]+): Got provider (\w+) for content (\w+):
+  ${TIMESTAMP}: Got provider ${PROVIDER_PEER_ID} for content ${CID},
+
+  ([^\s]+): Done retrieving content for (\w+) error: (.+)?:
+  ${TIME_STAMP}: Done retrieving content for ${CID} error: ${ERROR_MESSAGE:''},
+
+  ([^\s]+): Finish searching providers for cid (\w+) with ctx error: (.+)?:
+  ${TIME_STAMP}: Finish searching providers for cid ${CID} with ctx error: ${ERROR_MESSAGE:''},
 }
 ```
