@@ -1,7 +1,5 @@
 # Next
 
-* clean up / commit repos
-
 * get log generation (as working to date) set up on AWS and start sharing generated graphs (in fig. 9)
 
   * use current logs to create all fig. 9 graphs (priority is retrieval / dht lookup)

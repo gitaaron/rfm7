@@ -2,6 +2,7 @@
 
 # Monday Sep. 12, 2022
 
+* clean up / commit repos
 
 * get log generation (as working to date) set up on AWS and start sharing generated graphs (in fig. 9)
 
