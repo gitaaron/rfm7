@@ -32,6 +32,7 @@ The following is an ordered sequence of events for retrieval.
 
 ```
 {
+  INITIATED: retrieval_started_at,
   GETTING_CLOSEST_PEERS: get_providers_queries_started_at,
   DIALING: dial_started_at,
   FETCHING: connected_at,
