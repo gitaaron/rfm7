@@ -1,76 +1,119 @@
 # Next
 
-* run probes using two nodes on same LAN but different hosts to generate logs (focus on figure 9)
+* clean up / commit repos
 
-  * ipfs-lookup-measurement
+* get log generation (as working to date) set up on AWS and start sharing generated graphs (in fig. 9)
 
-    * get docker build working with ports of more-logging to latest versions of repos
+  * use current logs to create all fig. 9 graphs (priority is retrieval / dht lookup)
 
-      * bitswap is not included in Dockerfile
+    * events for retrieval
 
-      * docker networking issue (multiaddrs are not using ip that is reachable on local network)
+      * overall retrieval duration = content_fetch_duration + dht_walks_duration | done_retrieving_at - retrieval_started_at
 
-        * figure out which docker network (ipvlan?) works with latest kubo
+      * dht_walks_duration = found_first_provider_at - retrieval_started_at
 
-        * add note or script to create proper docker network(s) for docker-compose
+      * content_fetch_duration = done_retrieving_at - dial_started_at ?
 
-      * use compiled version instead of copied version of 'agent'
+    * events for publish
 
-      * generate key and pass it in
+    * for 'publish' find proper events for each phase
 
-      * commit / share docker related things
+    * seperate line for each graph by region
 
-      * in node/Dockerfile
+    * plot all graphs using both old logs and newly generated logs to verify newly generated look right
 
-        * clean 'agent' so that it compiles proper binary for docker image
+  * generate graphs using current logs and 'dht-lookup-dataset' to verify the generated logs are correct
 
-        * look into using a different more lightweight base image?
+  * get E2E working
 
-          * do we need loki/grafana?
+    * analysis scripts
+
+      * compare `dht-lookup-dataset` scripts with orig to ensure no other `more-logging` fixes were applied
+
+      * add a 'main' file that invokes all scripts
+
+      * accept cmd line -o arg and if it exists then write png to disk instead of displaying
+
+      * make `log_parse` and `cdf_plot_*` all use common 'logs' location/filenames
+
+      * move 'dht-lookup-dataset' scripts over to 'ipfs-lookup-measurement' repo
+
+    * write a script that reads entire log and prints start/end date of log (assuming first/last lines are latest/oldest)
+
+    * download script
+
+      * ensure 'download script' only downloads logs for previous two days
+
+      * download script downloads each log file with proper region name and places it somewhere accessible by plot
+        * map download log to region (eg/ `0.log` -> `af_south_east.log`)
+
+      * download scripts fixes
+
+        * add 'logcli' as pre-req. to README before 'download'
+
+        * update 'os.put.env' to use monitor ip out from terraform
+
+  * terraform / setup
+    * fix 'up.sh' key error
+      * generate key if it does not exist
+
+* ensure everything is shared properly
+
+  * generate graphs periodically from AWS probe logs (run on local dev machine; output should be a graph for a time period eg/ hourly+daily)
+
+    * create a `generate_graphs` script that
+
+      * calls `download_logs` from each instance in AWS
+
+        * uses `nodes-list.out` to connect to each instance
+
+      * downloads the log from each instance on AWS and writes to a local log file based on region name
+
+      * calls `parse` on each region log to generate output readable by models
+
+      * calls `generate_graphs` that outputs a png along with a metadata file
+
+        /graphs
+
+          /1/graph.png
+
+          /1/meta.json { time_generated, time_range }
+
+      * calls `share_graph`
+
+        * adds png to IPFS
+
+        * generates an html page
+
+          * lists out graphs
+
+              * image
+
+              * time generated
+
+              * time range of logs
+
+        * adds the html page to IPFS/IPNS
+
+      * log each step along with exit status
+
+    * add `generate_graphs` script to cron task to download logs and generate the graph hourly
+
+    * do same thing for all graphs (publish + phases)
 
 
-  * E2E logs/plots for figure 9
-
-    * see `ipfs-lookup-measurement/analysis/download_logs.py` to see if it will work with docker containers
-
-      * otherwise see if it will work for downloading from each 'agent' host OS
-
-      * run plotting scripts in rfm7 against new logs
-
-        * see `ipfs-lookup-measurement/analysis/plot.py` to see if it covers all graphs in 'figure 9'
-
-          * is it using 'model' in dht-lookup-dataset?
-
-        * see `ipfs-lookup-measurement/analysis/download_logs.py` to see how logs are collected
-
+  * ensure README in `ipfs-lookup-measurement/analysis` is up to date
 
   * ensure README in `ipfs-lookup-measurement` outlines the steps I took to get E2E working
 
-  * ensure README in `rfm7/dht-lookup-dataset` outlines the steps I took to get E2E working
-
   * commit / share rfm7
 
-    * ensure link to all repos from this rfm7 repo's README
-
-    * groom 'next/questions'
-
-* have a look at what logs are getting sent to loki/grafana 'monitor'
-
-* in `dht-lookup-dataset/models/model_log_line.py` check "Finish searching providers for cid" regex to see if both logs (with and without ctx err) are parsed
-
-* concurrent fmt.Print intermixes logs to the same line eg/
-
-  ```2022-09-03T15:15:58.631408-04:00: Got 20 closest peers to cid QmbGrjHw9ZkcjRHXXv19CBG5eLdeJSy1nPx5DiYFBGjSME from QmUgmRxoLtGERot7Y6G7UyF6fwvnusQZfGR15PuE6pY3aB(go-ipfs/0.10.0/): QmYkQ9SxH71iT6AttBajMqrrkPx1rmm8eBnRuZuqWDLBxB 12D3KooWJy8Ekrz5pkqbjnCG47xT4ZrkhL5mitU2y4ausrcoyW4z 12D3KooWErrj9qY9QAzJY7EG9vxv3rfVZbDoABfm5dHoPmNctLZD 12D3KooWDNsqsvv97nu5CNAVQtbP1WCeUrnCtxFxuZWBjLadRdxW 12D3KooWJ6v3eqqgq9WueXvUnAgfheqiwdcRrjyQezwnaGbDNRRx 12D3KooWAJD2hSzusJFD1Dsrimqd1qrcaqcFWfyuhEEFPAr6zYTa 12D3KooWDe1McaYzuN98VNvy25w3cui3D6FFj2Wnh41EBs9jpmbE 12D3KooWAf5DpVm2C17DHevZoda8HpBeTCuXnrkwrPjWbULfLp2q 12D3KooWCXddJU6H5CTSf7TqbgwqLRfpnPWHBsYhfoCw1n6HWgEB 12D3KooWFszGtW9JUgGaT12PKqsxtrrQnJJuHAm43RGLschDSRig 12D3KooWBxbnC5NbzmbPxUsGd7B1tkb8XMvgr57EpWUX6pe3ZD6n 12D3KooWCcn28S1oKBwAsCsNaethb9cTn4LTwLhf5V5usYA92zVw 2022-09-03T15:15:58.631468-04:00: Bitswap connect to peer 12D3KooWFRD52ag1zLYsbGW3UkyDg3Y7R36Sq8FxrNacMUAyLinN```
-
-  * change logs from fmt.Print to use logger pkg
-
-* E2E log/plogging with terraform/AWS
+    * ensure link to all repos from this rfm7 repo's README is correct
 
 * E2E log/plotting for 'publish' events
 
   * create a `publish-events.md` similar to `retrieval-events.md`
 
-  * ensure all logs are being generated in 'more-logging' port
 
   * create plotting scripts for publish (simiar to `cdf-*` for retrieval)
 
@@ -79,84 +122,36 @@
 
   * run test against 'docker' and ensure all necessary logs are generated (see if they already exist)
 
-# Later
+* grant documentation
 
-* create architecture diagram reflecting E2E solution
+  * create architecture diagram reflecting current E2E solution
 
-* determine if the size of data processed will be a problem and come up with alternatives
+  * review grant / outline what is left for grant to be completed and what steps need to be taken to complete work
 
-* dashboard mockup
+  * update ./later.md
 
-  * add missing information
+  * update ./proposal.md
 
-    * connection setup time
+    * include dashboard mockup
 
-    * geolocation / ASN
+    * problems
 
-    * proximity of fetch to provider
+      * how much data will be processed?
 
-  * additional controls
+        * in 7 days, 1 month, 1 years
 
-    * select a specific node or region
+    * requirements
 
-* finish proposal
+    * plan (include new architecture diagram)
 
-  * include dashboard mockup
+        * review todos here + in repo
 
-  * problems
+    * alternatives
 
-    * how much data will be processed?
+    * risks
 
-      * in 7 days, 1 month, 1 years
+    * re-read grant + RFM and update list of questions
 
-  * requirements
+      * there is also an 'ipfs design questions' in keep
 
-  * plan (include new architecture diagram)
-
-      * review todos here + in repo
-
-  * alternatives
-
-  * risks
-
-  * re-read grant + RFM and update list of questions
-
-    * there is also an 'ipfs design questions' in keep
-
-* create a complete list of regions or availability zones to be deployed to
-
-* investigate tooling
-
-  * how to provide filters and selectors efficiently
-
-    * utilize pre-existing python scripts and pre-generate data for plotting each graph
-
-    * efficient queries of large log data sets
-
-      * hadoop
-
-      * spark
-
-      * time series
-
-        * timescale db
-
-        * prometheus
-
-      * redshift
-
-      * big query db
-
-      * snowflake
-
-  * extensible dashboard
-
-    * Jupyter
-
-    * Grafana
-
-    * Sisense (+ Grafana?)
-
-    * Periscope
-
-
+  * include a complete list of regions or availability zones that probes are deployed to

@@ -1,46 +1,87 @@
-# Proposal
+# Distribution of DHT lookup times and Breakdown of Content Routing Latency
 
-The following is a proposal for [RFM7: Distribution of DHT lookup times and breakdown of content routing latency](https://www.dgm.xyz/grants/cieOsJkIqWSQkk9obsrO) grant.
+## How do you plan to approach this project? What are your initial ideas for how to approach the design, architecture, and solution implementation for the project?
 
-## Background / Prior Work
+Please see the attached Figma files for a proposed architecture.  The technologies I intend to lean on are K8s for controlling the 'probe' nodes and libp2p for invoking the DHT with appopriate hooks for logging the appropriate events (each log will have a timestamp).
+
+After each run, the logs will be uploaded to a centralized 'log collector' and analyzed / interpreted into a CDF format that the dashboard can then interpret.
+
+Architecture: https://www.figma.com/file/P2OFIBo9iibkIpYJ3XKj0e/DHT-measurements-architecture?node-id=0%3A1
+
+## Milestone Notes
+
+### Detailed breakdown of methodology plan
+
+The deliverable of this milestone will be to clarify on what will be delivered and how it will be implemented.
+
+  * review of prior work
+
+  * a mockup of the dashboard (non-interactive)
+
+    * grafana?
+
+  * CDF data definition + fixtures (aka dummy data)
+
+  * hopefully some initial POCs can also be provided but most importantly the necessary technology will be understood
+
+    * libp2p libraries / hooks
+
+    * terraform / k8s methodology
+
+### Experiment Scripts / POC
+
+There will be working prototypes of:
+
+  * interactive dashboard with all controls using 'dummy data'
+
+  * probe publisher / retriever
+
+    * given a file the retriever will download the file from the publisher over the public IPFS network and each will record the appropriate logs in order to make all latency measurements as laid out in the requirements
+
+  * controller
+
+      * a README demonstrating how to run the controller
+
+        * provides a sample of config data
+
+      * generates a random files and passes it to each peer
+
+### Initial Results / Proof of Concept
+
+  * dashboard showing actual results (not dummy data)
+
+  * controller
+
+      * how 'popularity' is made deterministic
+
+        * defining as 'how many other peers asked for the same file'
+
+        * perhaps use a staged approach where a new random file is generated for each retriever
+
+        * each retriever is instructed to download a new file that was used in the previous stage
+
+        * popularity of the file would then correspond to the stage it is at (the third stage = popularity of 3)
+
+        * file allocation in each stage is randomized to provide better sampling
 
 
-[`Design and Evaluation of IPFS: A Storage Layer for the Decentralized Web`](http://bafybeidbzzyvjuzuf7yjet27sftttod5fowge3nzr3ybz5uxxldsdonozq.ipfs.localhost:8080/) using a subset of [dht-lookup-dataset](https://bafybeid7ilj4k4rq27lg45nceq4akdpetav6bcujgiym6vch5ml24tk2t4.ipfs.dweb.link)
 
-  * sample CDFs showing distribution of latency
+### Reproducible Experiments & Stable Results
 
-  * link to DHT Measurements Dataset
+  * the bar chart might be converted to a candlestick plot to show variance over time
 
-[`DHT Measurements Dataset`](https://bafybeid7ilj4k4rq27lg45nceq4akdpetav6bcujgiym6vch5ml24tk2t4.ipfs.dweb.link)
+  * scheduling of batch jobs
 
-  * contains python scripts
+    * experient initiator
 
-    * parsing logs into a more efficient data format
+    * log analyzer
 
-    * data modeling into 'retrieval' and 'publish' records
+### Final Report
 
-    * sample `plot_retrievals.py` that shows how the data can be analysed to produce a histogram showing distribution of latency
+  * final architecture diagram documenting all technology / implementation steps taken
 
-  * README contains links to other supporting work for generating logs
+  * shortcomings of current system design (if any)
 
-[`ipfs-lookup-measurement`](https://github.com/dennis-tra/ipfs-lookup-measurement)
-
-  * sample terraform setup for probe orchestration
-
-[`go-ipfs`](https://github.com/dennis-tra/go-ipfs/tree/more-logging) - Branch `more-logging`
-
-[`go-libp2p-kad-dht`](https://github.com/dennis-tra/go-libp2p-kad-dht/tree/more-logging) - Branch `more-logging`
-
-[`go-bitswap`](https://github.com/dennis-tra/go-bitswap/tree/more-logging) - Branch `more-logging`
-
-@TODO - include architecture diagram along with writeup that describes how current E2E solution works
-
-## Goal
-
-To have a dashboard that enables protocol designers to better understand the performance of the IPFS DHT while downloading content so that they can use it to make better informed design decisions in the future
-
-The dashboard should help uncover:
-
-  * factors causing slowdowns
+  * interpretation of results
 
   * 'edge' locations (based on geography and network topology)
