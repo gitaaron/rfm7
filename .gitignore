@@ -8,3 +8,6 @@ __pycache__
 
 # backup  files
 *.bak
+
+# mac os
+*.DS_Store

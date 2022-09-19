@@ -1,5 +1,23 @@
 # Next
 
+  * verification
+
+    * compare `dht-lookup-dataset` scripts with orig to ensure no other `more-logging` fixes were applied
+
+    * generate graphs using current logs and 'dht-lookup-dataset' to verify the generated logs are correct
+
+  * terraform / setup
+
+    * it should be possible to connect to each node created
+
+  * in `generate_share.sh` shell script
+
+    * log each step along with exit status
+
+  * refactor: add phase calculation to 'retrieval' and 'pub' models
+    * it may alrady exist (have a look at `duration_*`)
+    * in publish see if there is a discrepancy between `find_node_started_at` and `provide_started_at` and if so then figure out what is happening before
+
   * probe health monitor
 
     * plot disk spage/memory/uptime for each probe in grafana dashboard
@@ -60,5 +78,9 @@
 
         * do we need loki/grafana?
 
+    * run test against 'docker' and ensure all necessary logs are generated
+
   * change logs from fmt.Print to use logger pkg?
+
+
 

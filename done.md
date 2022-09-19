@@ -1,5 +1,55 @@
 # Done
 
+* get log generation (as working to date) set up on AWS and start sharing generated graphs (in fig. 9)
+
+  * get E2E working
+
+    * download script
+
+      * ensure 'download script' only downloads logs for a certain time period (eg/ past day)
+
+      * download script downloads each log file with proper region name and places it somewhere accessible by plot generator
+
+      * map download log to region (eg/ `0.log` -> `af_south_east.log`)
+
+
+    * analysis `plot_all` script
+
+      * optionally write png to disk instead of displaying
+
+      * make `log_parse` and `cdf_plot_*` all use common 'logs' location/filenames
+
+  * download script
+    * update 'os.put.env' to use monitor ip out from terraform
+
+
+  * move 'dht-lookup-dataset' scripts over to 'ipfs-lookup-measurement' repo
+
+  * use current logs to create all fig. 9 graphs (priority is retrieval / dht lookup)
+
+    * add a 'main' file that invokes all scripts
+
+    * plot (a,b,c,d,e,f)
+
+      * events for retrieval
+
+        * overall retrieval duration = content_fetch_duration + dht_walks_duration | done_retrieving_at - retrieval_started_at
+
+        * dht_walks_duration = found_first_provider_at - retrieval_started_at
+
+        * content_fetch_duration = done_retrieving_at - dial_started_at ?
+
+      * events for publish
+
+        * for 'publish' find proper events for each phase
+
+        * create a `publish-events.md` similar to `retrieval-events.md`
+
+        * create plotting scripts for publish (simiar to `cdf-*` for retrieval)
+
+    * create seperate line for each graph by region along with cumulative graph
+
+
 # Monday Sep. 12, 2022
 
 * clean up / commit repos
