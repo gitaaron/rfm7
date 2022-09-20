@@ -1,6 +1,22 @@
 # Next
 
-* plot latency trends over time
+* outstanding features
+
+  * trends: stability of measurements over time (ie/ is a node/region consistently involved in slow lookups?)
+
+  * factors
+    * geographic proximity
+
+    * effects of file size
+
+    * popularity
+
+    * uptime of the requesting peers being live in the network
+
+
+  * additionally, we could show the distribution of lookups in a specific probe, i.e. in a specific section of the network, in order to have a sense of the DHT lookup times to be expected for someone in the probe's premises.
+
+---
 
 * terraform / setup
   * fix 'up.sh' key error
@@ -23,6 +39,8 @@
   * add sample logs to the 'analysis' folder so that it can be immediately run by someone checking out repo
 
 * rename 'figs' to 'old/figs'
+
+* determine timezone logs are generated as 
 
 * commit / share rfm7
 
