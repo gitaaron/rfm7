@@ -19,3 +19,5 @@ Date: Sept. 19, 2022
       * how often is the 'closest' (geographically and by network latency) not fetched?
 
       * how would fetching from the closest impact latency?
+
+* what are all of the config options?

@@ -13,10 +13,13 @@
 
     * uptime of the requesting peers being live in the network
 
-
   * additionally, we could show the distribution of lookups in a specific probe, i.e. in a specific section of the network, in order to have a sense of the DHT lookup times to be expected for someone in the probe's premises.
 
+  * each graph should have a number of results used
+
 ---
+
+* look into why homepage is not loading from ipfs gateway
 
 * terraform / setup
   * fix 'up.sh' key error
@@ -33,6 +36,8 @@
     * add 'logcli' as pre-req. to README before 'download'
 
     * remove old figs
+
+    * ensure all 'config' options are documented
 
 * ensure README in `ipfs-lookup-measurement/analysis` is up to date
 
