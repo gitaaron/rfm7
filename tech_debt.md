@@ -1,5 +1,25 @@
 # Next
 
+  * ensure 'prod' logs are not conflicting with 'dev' location
+    * search for `tmp/dht_lookup/logs` in project
+
+  * log parsing should not parse the same log event twice
+
+  * docker
+
+    * should work in network without public access
+
+    * add ipfs to controller to act as bootstrap server
+
+    * agent docker-entry
+
+      * depends on controller to be running first
+
+      * gets peer id of controller
+
+      * adds to its own bootstrap list
+
+
   * verification
 
     * compare `dht-lookup-dataset` scripts with orig to ensure no other `more-logging` fixes were applied
@@ -82,5 +102,8 @@
 
   * change logs from fmt.Print to use logger pkg?
 
+  * issue with current 'more-logging' strategy
 
+    * if an experiment fails then there is no log to indicate the experiment failed leaving the burden on the analysis to discard incomplete logs
 
+    * benchmarking scripts are manually applied to code we are testing and it can become stale (we are benchmarking an old version)

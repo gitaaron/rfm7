@@ -1,6 +1,68 @@
 # Done
 
+  * factors
+
+    * geographic proximity
+
+      * plot 'num_providers' trend
+
+      * controller
+
+        * config # of publishers
+
+          * publish to only one agent
+
+          * publish to all agents that is not involved in retrieval
+
+  * get docker working (for developing controller with multiple agents)
+
+    * figure out how to transfer logs (either mount volume or make use of promtail)
+
+      * add a new `download_local_logs` script that only downloads from the docker nodes (not terraform)
+
+
+  * trends: stability of phases over time 
+
+# Monday Sep. 20, 2022
+
 * get log generation (as working to date) set up on AWS and start sharing generated graphs (in fig. 9)
+
+  * generate graphs periodically from AWS probe logs and display on a page so that different time frames can be compared (run on local dev machine; output should be a graph for a time period eg/ hourly+daily)
+
+    * analysis scripts
+      * `plot_all` generates a 'meta.json' (eg/ 1/meta.json)
+
+            ``` { generated_time, start_time, end_time } ```
+
+            * generated_time is current time when script is ran
+
+            * start/end time is based on logs
+
+    * create `share` script
+
+      * `share/page`
+
+        * copies over all output figs dirs in 'analsys'
+
+        * creates an html file listing time periods with links
+
+          * time periods taken form meta.json
+
+        * clicking each link displays list of all graphs generated for that time period
+
+        * output html goes into 'figs' dir (from plot_all)
+
+        * calls 'ipfs add -r' in root figs dir
+
+        * create new ipns link with results from 'ipfs add -r'
+
+    * create a `generate_sharable_output.sh` shell script
+
+      * calls download, log_parse, plot_all, share/page scripts
+
+
+    * add a crontab task to call it every hour
+
 
   * get E2E working
 
@@ -13,7 +75,7 @@
       * map download log to region (eg/ `0.log` -> `af_south_east.log`)
 
 
-    * analysis `plot_all` script
+    * analysis scripts
 
       * optionally write png to disk instead of displaying
 

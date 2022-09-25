@@ -2,10 +2,66 @@
 
 * outstanding features
 
-  * trends: stability of measurements over time (ie/ is a node/region consistently involved in slow lookups?)
-
   * factors
+
     * geographic proximity
+
+        * have a way to filter results based on 'player mode' type
+
+        * better answer of 'where content is coming from'
+
+          * try running agent 'ipfs' with debug level to see 'block' bitswap responses
+
+            * add 'received block' event to python 'retrieve' model
+
+            * compare 'num_providers' with more than one bitswap 'block'
+
+          * try running dennis-tra `more-logging` with `host` setup
+
+            OR
+
+          * fix my port of `more-logging` so that they work with current parser
+
+            * look at `dennis-tra` `more-logging`
+
+            * use 'host' setup for testing
+
+            * should be able to run `quick_stats`
+
+
+        * analysis should be able to filter logs between controller publisher modes
+
+        * analysis should be able to decider the peer id of the actual content provider from the 
+
+
+
+      * analysis
+
+          * new reports
+
+            * percentage of runs where node fetches content from closest (geographically)
+
+              * isClosestNeighbor (fetcher:region_1, provider:region_2, alternatives:[region_3, region_4...]) returns bool
+
+              * getProximity (region_1, region_2) returns proximity
+
+              * 'retrieval' model
+
+                * getContentProvider (returns peer id of peer that provided content)
+
+              * for a certain time period:
+
+              * percentageOfCloseFetches(retrievals)
+
+                * iterate over all 'retrievals'
+
+                * determine if retrieve happened with 'isClosestNeighbor'
+
+            * comparison of total latency / fetch latency between 'neighbor' fetches and 'long distance' fetches
+
+          * breakdown reports by region
+
+          * current analysis should continue to be performed against 1 publisher
 
     * effects of file size
 
@@ -17,6 +73,9 @@
 
   * each graph should have a number of results used
 
+  * trends: stability of regions over time
+
+
 ---
 
 * look into why homepage is not loading from ipfs gateway
@@ -25,7 +84,7 @@
   * fix 'up.sh' key error
     * generate key if it does not exist
 
-* in `ipfs-lookup-measurement/README'
+* in `ipfs-lookup-measurement/README`
 
     * outline the steps I took to get E2E working
 
@@ -38,6 +97,11 @@
     * remove old figs
 
     * ensure all 'config' options are documented
+
+
+    * add "development with docker" section
+
+
 
 * ensure README in `ipfs-lookup-measurement/analysis` is up to date
 
