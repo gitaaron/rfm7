@@ -38,7 +38,7 @@
 
             * comparison of total latency / fetch latency between 'neighbor' fetches and 'long distance' fetches
 
-    * file size
+    * file size (different orders of magnitude 0.5 Mb, 5 Mb, 50 Mb)
 
       * see if there is inconsistency between file size and any retrieval latency graphs
 

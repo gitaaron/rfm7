@@ -11,6 +11,7 @@ Date: Sept. 26, 2022
   * focus on question 'is closest copy served?'
 
 * file size
+  * different orders of magnitude 0.5 Mb, 5 Mb, 50 Mb
   * see if  there is inconsistency between file size and any retrieval latency graphs
   * expect: other steps besides 'fetching' should stay constant and 'fetching' should increase linearly
 
