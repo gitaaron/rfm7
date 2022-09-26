@@ -1,10 +1,39 @@
 # Next
 
+* change 'download' dir to somewhere besides 'tmp' so that logs are retained
+
+* plot trends of 'total duration' with a region breakdown
+
 * outstanding features
+
 
   * factors
 
     * geographic proximity
+
+        * investigate how blocks are fetched over bitswap in kubo
+
+          * if more than one provider: how are blocks being downloaded?
+
+            * potential options:
+
+              * first provider that produces a 'HAVE' ?
+
+              * first provider that produces a 'BLOCK' ?
+
+              * all providers but different blocks at the same time ?
+
+              * all providers any block?
+
+          * what 'percentage' of content is typically fetched from 'first provider'
+
+            * if typically majority is first provider I will focus on this
+
+              OTHERWISE
+
+            * intercept 'block' bitswap events and use those to determine % of content fetched by each provider
+
+---
 
         * have a way to filter results based on 'player mode' type
 

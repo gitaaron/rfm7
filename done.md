@@ -1,5 +1,11 @@
 # Done
 
+  * `quick_stats`
+    * average total latency with > 1 provide vs average total latency with 1 provider
+
+  * ec2 agent instance is not responsive
+    * terminate and up a new one via terraform
+
   * factors
 
     * geographic proximity
