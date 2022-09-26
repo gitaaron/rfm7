@@ -1,72 +1,18 @@
 # Next
 
-* change 'download' dir to somewhere besides 'tmp' so that logs are retained
+* change 'download' dir to somewhere besides 'tmp' so that logs are more easily retained
 
-* plot trends of 'total duration' with a region breakdown
+* plot trends of different phases (excluding initial) with a region breakdown
 
 * outstanding features
-
 
   * factors
 
     * geographic proximity
 
-        * investigate how blocks are fetched over bitswap in kubo
-
-          * if more than one provider: how are blocks being downloaded?
-
-            * potential options:
-
-              * first provider that produces a 'HAVE' ?
-
-              * first provider that produces a 'BLOCK' ?
-
-              * all providers but different blocks at the same time ?
-
-              * all providers any block?
-
-          * what 'percentage' of content is typically fetched from 'first provider'
-
-            * if typically majority is first provider I will focus on this
-
-              OTHERWISE
-
-            * intercept 'block' bitswap events and use those to determine % of content fetched by each provider
-
----
-
-        * have a way to filter results based on 'player mode' type
-
-        * better answer of 'where content is coming from'
-
-          * try running agent 'ipfs' with debug level to see 'block' bitswap responses
-
-            * add 'received block' event to python 'retrieve' model
-
-            * compare 'num_providers' with more than one bitswap 'block'
-
-          * try running dennis-tra `more-logging` with `host` setup
-
-            OR
-
-          * fix my port of `more-logging` so that they work with current parser
-
-            * look at `dennis-tra` `more-logging`
-
-            * use 'host' setup for testing
-
-            * should be able to run `quick_stats`
-
-
-        * analysis should be able to filter logs between controller publisher modes
+      * answer question 'is closest copy content generally being served' (assume closest copy is coming from first provider)
 
         * analysis should be able to decider the peer id of the actual content provider from the 
-
-
-
-      * analysis
-
-          * new reports
 
             * percentage of runs where node fetches content from closest (geographically)
 
@@ -86,28 +32,37 @@
 
                 * determine if retrieve happened with 'isClosestNeighbor'
 
+          * generate new reports
+
+            * percentage of 'closest neighbor' retrievals vs 'non nearest neighbor' retrievals
+
             * comparison of total latency / fetch latency between 'neighbor' fetches and 'long distance' fetches
 
-          * breakdown reports by region
+    * file size
 
-          * current analysis should continue to be performed against 1 publisher
+      * see if there is inconsistency between file size and any retrieval latency graphs
 
-    * effects of file size
-
-    * popularity
+      * expect: other steps besides 'fetching' should stay constant and 'fetching' should increase linearly with file size
 
     * uptime of the requesting peers being live in the network
 
-  * additionally, we could show the distribution of lookups in a specific probe, i.e. in a specific section of the network, in order to have a sense of the DHT lookup times to be expected for someone in the probe's premises.
+    * how long a file has been published for
 
-  * each graph should have a number of results used
+      * for each phase a trend with a breakdown of 'publish age'
 
-  * trends: stability of regions over time
+    * popularity
 
+  * analysis should differentiate between various 'factors/constants/controls' (otherwise they might be meaningless)
+
+  * each graph (or section) should have a number of results used
+
+  * check out final reports in network measurements repo
 
 ---
 
-* look into why homepage is not loading from ipfs gateway
+* ipns link is not loading from ipfs gateway
+  * simple way to build homepage somewhere with updated links
+
 
 * terraform / setup
   * fix 'up.sh' key error
