@@ -1,42 +1,8 @@
 # Next
 
-* change 'download' dir to somewhere besides 'tmp' so that logs are more easily retained
-
-* plot trends of different phases (excluding initial) with a region breakdown
-
 * outstanding features
 
   * factors
-
-    * geographic proximity
-
-      * answer question 'is closest copy content generally being served' (assume closest copy is coming from first provider)
-
-        * analysis should be able to decider the peer id of the actual content provider from the 
-
-            * percentage of runs where node fetches content from closest (geographically)
-
-              * isClosestNeighbor (fetcher:region_1, provider:region_2, alternatives:[region_3, region_4...]) returns bool
-
-              * getProximity (region_1, region_2) returns proximity
-
-              * 'retrieval' model
-
-                * getContentProvider (returns peer id of peer that provided content)
-
-              * for a certain time period:
-
-              * percentageOfCloseFetches(retrievals)
-
-                * iterate over all 'retrievals'
-
-                * determine if retrieve happened with 'isClosestNeighbor'
-
-          * generate new reports
-
-            * percentage of 'closest neighbor' retrievals vs 'non nearest neighbor' retrievals
-
-            * comparison of total latency / fetch latency between 'neighbor' fetches and 'long distance' fetches
 
     * file size (different orders of magnitude 0.5 Mb, 5 Mb, 50 Mb)
 
@@ -52,7 +18,13 @@
 
     * popularity
 
-  * analysis should differentiate between various 'factors/constants/controls' (otherwise they might be meaningless)
+  * share page
+
+    * include `quick_stats`
+
+    * show certain `quick_stat` trends since beginning of time
+
+    * analysis should differentiate between various 'factors/constants/controls' (otherwise they might be meaningless)
 
   * each graph (or section) should have a number of results used
 

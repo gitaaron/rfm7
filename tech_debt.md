@@ -1,5 +1,50 @@
 # Next
 
+  * fix docker (and other places) nodes-list.out (new format)
+
+  * change 'download' dir to somewhere besides 'tmp' so that logs are more easily retained
+
+  * index page should sort by date printed instead of folder number
+
+  * controller/config - should 3030 port be hardcoded when generating Host?
+
+  * too many logs from `generate_share.sh`
+    * analysis
+      * print 'summary' instead of 'skipping'
+
+  * experiment nodes seem to be going down unexpectedly
+
+    * if a node is down (aka ID lookup fails)
+
+      * add recovery routine
+
+        * stop running experiment
+
+        * terminate instance and recreate it
+
+          * create 'terminate.sh' terraform that accepts NODE_NUM env var
+
+          * call 'terminate.sh' from controller that passes in NODE_NUM env var
+
+        * ensure refresh of 'nodes-list.out'
+
+        * re-run experiment with refreshed 'nodes-list.out'
+
+          * add in a 'wait-for-agents' that is run when controller first starts or is restarted
+
+        * capture logs / healthcheck stats and send me an email
+
+
+  * refactor: `analysis/plot_all.py`
+    * all 'retrieval' filters should be part of 'ParsedLogFile' so that they are only performed once
+    * get rid of `load_parsed_logs`
+    * use 'ParsedLogFiles' instead of  List[ParsedLogFile]
+
+  * `generate_share.sh`
+    * should call 'poetry install' then use `poetry run log_parse` and `poetry run plot_all`
+
+---
+
   * ensure 'prod' logs are not conflicting with 'dev' location
     * search for `tmp/dht_lookup/logs` in project
 

@@ -1,4 +1,5 @@
 # Questions
+* is there a reason fmt.print with timestamp is used instead of the logging lib?
 
 * debugging
 

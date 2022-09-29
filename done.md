@@ -1,5 +1,58 @@
 # Done
 
+
+* factors
+
+  * geographic proximity
+
+    * answer question 'is closest copy content generally being served' (assume closest copy is coming from first provider)
+
+      * analysis should be able to determine the peer id of the actual content provider (assume it is first provider)
+
+          * quick stats
+
+            * percentage of total 'multi provider' runs where node fetches content from closest (geographically)
+
+              * isClosestNeighbor (fetcher:region_1, provider:region_2, alternatives:[region_3, region_4...]) returns bool
+
+              * getProximity (region_1, region_2) returns proximity
+
+              * 'retrieval' model
+
+                * getContentProvider (returns peer id of peer that provided content)
+
+              * for a certain time period:
+
+              * percentageOfCloseFetches(retrievals)
+
+                * iterate over all 'retrievals'
+
+                * determine if retrieve happened with 'isClosestNeighbor'
+
+                * analysis needs peer id to region name mapping
+
+                  * alter terraform output to include `node_0_region`
+
+                  * controller
+
+                    * add `info` command line script that prints a json list connecting peer id with region
+                      * reads node list (ip/region)
+                      * gets peer ID for each node
+                      * outputs `node_config.json` to analysis
+                        { `PEER_ID`: { region_name: 'REGION_NAME', region_ip: 'REGION_IP' }
+
+
+
+                    * `run.sh` should generate `agent_config.json` to be used by analysis whenever `controller` is run
+
+            * percentage of 'closest neighbor' retrievals vs 'non nearest neighbor' retrievals
+
+            * comparison of total latency / fetch latency between 'neighbor' fetches and 'long distance' fetches
+
+* plot trends of different phases (excluding initial) with a region breakdown
+
+## Monday Sep. 26, 2022
+
   * `quick_stats`
     * average total latency with > 1 provide vs average total latency with 1 provider
 
@@ -29,7 +82,7 @@
 
   * trends: stability of phases over time 
 
-# Monday Sep. 20, 2022
+## Monday Sep. 20, 2022
 
 * get log generation (as working to date) set up on AWS and start sharing generated graphs (in fig. 9)
 
@@ -118,7 +171,7 @@
     * create seperate line for each graph by region along with cumulative graph
 
 
-# Monday Sep. 12, 2022
+## Monday Sep. 12, 2022
 
 * clean up / commit repos
 
