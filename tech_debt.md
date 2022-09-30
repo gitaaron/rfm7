@@ -40,6 +40,8 @@
     * get rid of `load_parsed_logs`
     * use 'ParsedLogFiles' instead of  List[ParsedLogFile]
 
+  * refactor: `analysis/cdf_retrieval.py` to make use of `RetrievalPhase` enum
+
   * `generate_share.sh`
     * should call 'poetry install' then use `poetry run log_parse` and `poetry run plot_all`
 

@@ -1,34 +1,84 @@
 # Next
 
-* outstanding features
+* analysis
 
-  * factors
+  * include region breakdown trends for other phases besides total duration (excluding 'initiated')
 
-    * file size (different orders of magnitude 0.5 Mb, 5 Mb, 50 Mb)
+* factors
 
-      * see if there is inconsistency between file size and any retrieval latency graphs
+  * file size with different orders of magnitude (eg/ 0.5 Mb, 5 Mb, 50 Mb)
 
-      * expect: other steps besides 'fetching' should stay constant and 'fetching' should increase linearly with file size
+    * report
 
-    * uptime of the requesting peers being live in the network
+        * is there an inconsistency between file size and any retrieval latency graphs?
 
-    * how long a file has been published for
+        * expect: other steps besides 'fetching' should stay constant and 'fetching' should increase linearly with file size
+
+    * collection
+
+      * controller should perform several different runs for each file size with 'retriever' as mainplayer mode
+
+      * logging should map CID to file size
+
+        * EITHER
+
+          * `more-logging` fork should be updated to include file size with CID with retrieval is initiated
+
+        * OR
+
+          * agent logs are made available to analysis (uploaded to loki DB and downloaded)
+
+    * analysis
+
+      * retrieval model should have a 'file size' field (default to 0.5 Mb)
+
+      * log parsing should populate 'retrieval model' with file size
+
+      * plot all trends for each file size
+
+      * breakdown of bar charts for phase duration with three buckets (one for each file size)
+
+  * uptime of the requesting peers being live in the network
+
+    * report
+
+      * how does agent 'uptime' effect duration of the different phases (especially 'getting_closest_peers')
+
+    * experiment should send 'restart' signal to each instance of kubo periodically (every hour)
+
+    * more-logging outputs 'uptime' along with CID when retrieval begins
+
+    * analysis
+
+      * retrieval model has an 'origin uptime' field
+
+      * histogram plot: average duration of each phase for different uptime buckets based on a 5 min. increment
+
+  * how long a file has been published for
+
+    * analysis
 
       * for each phase a trend with a breakdown of 'publish age'
 
-    * popularity
+  * popularity
 
-  * share page
+* share page
 
-    * include `quick_stats`
+  * group / order related graphs and include headings for better readability
 
-    * show certain `quick_stat` trends since beginning of time
+  * include `quick_stats`
 
-    * analysis should differentiate between various 'factors/constants/controls' (otherwise they might be meaningless)
+  * plot certain `quick_stat` trends since beginning of time
 
-  * each graph (or section) should have a number of results used
+* analysis
 
-  * check out final reports in network measurements repo
+  * should differentiate between various 'factors/constants/controls' (otherwise they might be meaningless)
+
+  * each graph (or section) should have a number of results used (sample size)
+
+* final report
+
+  * check out other final reports in network measurements repo
 
 ---
 
