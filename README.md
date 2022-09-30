@@ -1,6 +1,6 @@
 # RFM 7 Project Management
 
-A 'project management repo' documenting progress and meeting notes regarding a [radius grant](https://www.dgm.xyz/grants/cieOsJkIqWSQkk9obsrO) for a protolab [request for measurement](https://github.com/protocol/network-measurements/blob/master/RFMs.md#_mjvqjcvas5uh).
+A 'project management repo' documenting progress and meeting notes regarding a [radius grant](https://www.dgm.xyz/grants/cieOsJkIqWSQkk9obsrO) for a probelab [request for measurement](https://github.com/protocol/network-measurements/blob/master/RFMs.md#_mjvqjcvas5uh).
 
 [Progress Updates](./progress-updates.md) include progress of the work at a higher level that might be worthwhile sharing.
 

@@ -43,6 +43,12 @@ Analysis of a 4 hour period (sample size of 23 'many provider' retrievals and 11
 A trend for 'total duration' over time was also added for the last 4 hours and since the beginning of time which you can see here - ipfs://bafybeifds2cd6zmr2mohgyqwxm52zsrcnsjvamaiwz7bzuex2t3zel6cou/
 
 
+# Sep. 15, 2022 
+
+A `generate_share.sh` script was added that downloads logs for the last four hours and puts them into a directory index (along with older logs) so that the analysis script can be performed against them and the contents can be read from an html page published over IPFS.
+
+An index of all snapshots can be found at `ipns://k51qzi5uqu5dhwn2mmkqzuf1owd1dp2sfnjxukykm82dr3r3cvckodk4ml8c40/`
+
 # Aug. 27, 2022
 
 I've completed a 'round' of the probe experiment without any errors except for an "address needed" report while performing a 'disconnect'.  
