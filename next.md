@@ -1,42 +1,69 @@
 # Next
 
-* analysis
-
-  * include region breakdown trends for other phases besides total duration (excluding 'initiated')
-
 * factors
 
-  * file size with different orders of magnitude (eg/ 0.5 Mb, 5 Mb, 50 Mb)
-
-    * report
-
-        * is there an inconsistency between file size and any retrieval latency graphs?
-
-        * expect: other steps besides 'fetching' should stay constant and 'fetching' should increase linearly with file size
+  * filesize
 
     * collection
 
-      * controller should perform several different runs for each file size with 'retriever' as mainplayer mode
-
       * logging should map CID to file size
 
-        * EITHER
+          * controller/agent outputs a single line with CID / size
 
-          * `more-logging` fork should be updated to include file size with CID with retrieval is initiated
-
-        * OR
 
           * agent logs are made available to analysis (uploaded to loki DB and downloaded)
 
+            * `promtail config` includes `agent.log`
+
+            * `download_logs.py` downloads `agent.log` along with `all.log`
+
+---
+
+            * analysis parses new filename to create proper regions
+
+          * update cloud agents to upload new logs
+
+            * terraform
+
+              * update testing_node to refer to gitaaron repo's promtail
+
+
+      * controller should perform several different runs for each file size (0.5, 5, 50 Mb) with 'retriever' in mainplayer mode
+
+---
+
+      * terraform
+          * terminate/up all agent nodes
+
     * analysis
 
-      * retrieval model should have a 'file size' field (default to 0.5 Mb)
+      * update `log_parse,plot_all,quick_stats` to look for new `ipfs_region.log` name
+        * `ipfs_region.py` should be parsed first
+        * `agent_region.py` should be parsed after so that it can find the retrieval model to update with file-size
 
       * log parsing should populate 'retrieval model' with file size
+
+        * retrieval model should have a 'file size' field (default to 0.5 Mb)
+
+        * for each region
+
+            * load both ipfs and agent logs
+
+            * read agent log and update to retrieval with corresponding CID
 
       * plot all trends for each file size
 
       * breakdown of bar charts for phase duration with three buckets (one for each file size)
+
+      * create 'phase' pie chart for each possible filesize
+        * ensure 'val' in pie chart is average instead of total (that should be explained somewhere)
+
+    * report
+
+        * is there any inconsistency between file size and any retrieval latency graphs?
+
+        * expect: other steps besides 'fetching' should stay constant and 'fetching' should increase linearly with file size
+
 
   * uptime of the requesting peers being live in the network
 
@@ -60,7 +87,13 @@
 
       * for each phase a trend with a breakdown of 'publish age'
 
+  * geographic proxomity
+
+    * see what happens when nodes are in the same region
+
   * popularity
+
+  * node health stats (uptime/memory)
 
 * share page
 

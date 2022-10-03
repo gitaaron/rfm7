@@ -1,5 +1,13 @@
 # Next
 
+  * calculate 'proximity' based on IP address instead of AWS region
+
+  * add 'test' cmd line arg to 'generate-share' and if set:
+
+    * skip download
+
+    * skip publish to ipns
+
   * fix docker (and other places) nodes-list.out (new format)
 
   * change 'download' dir to somewhere besides 'tmp' so that logs are more easily retained

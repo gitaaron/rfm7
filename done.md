@@ -1,5 +1,8 @@
 # Done
 
+* analysis
+
+  * include region breakdown trends for other phases besides total duration (excluding 'initiated')
 
 * factors
 
