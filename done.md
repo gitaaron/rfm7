@@ -1,5 +1,117 @@
 # Done
 
+* filesize
+
+  * report on
+
+      * is there any inconsistency between file size and any retrieval latency graphs?
+
+      * expect: other steps besides 'fetching' should stay constant and 'fetching' should increase linearly with file size
+
+  * analysis
+
+    * quick_stat
+
+      * all_file_sizes
+
+      * for each phase / filesize
+
+        * avg duration
+
+      * retrieval model should have a 'file size' field that are populated from agent log (default to 0.5 Mb)
+
+        * log parsing should populate 'retrieval model' with file size
+
+* passing `agent_info.json` from controller to analysis does not work if agents are restarted as old values are lost
+
+  * analysis
+
+    * modify to look for peer id in log instead of `agent_info.json`
+
+
+* analysis
+
+  * FIX: region breakdown trends (many lines for same region)
+
+
+* passing `agent_info.json` from controller to analysis does not work if agents are restarted as old values are lost
+
+  * `run.sh` no longer calls info cmd upon startup
+
+  * `agent` adds a log line in `handleGetID` with `peer_id`
+
+  * analysis
+
+    * modify to look for log instead of `agent_info.json`
+
+
+* factors
+  * agent health stats (`load_avg/memory`)
+
+    * add a `healthcheck` log including uptime/memory when each 'doLookup' is performed
+
+
+  * agent uptime (uptime of the requesting peers being live in the network)
+
+    * restart agents periodically
+
+        * `run.sh` 
+          * loop with timeout that invokes controller once in each loop
+
+          * at beginning of loop look for a file `restart_agents.cmd` and if it exists then:
+
+            * ask terraform to destroy all agent resources then recreate them
+
+            * update 'nodes-list.out'
+
+    * controller
+
+        * wait until all agents have return ipfs peer id before continuing
+
+          * exit with error if agents have not restarted after a certain time
+
+
+
+  * how long a file has been published for (`publish_age`)
+
+    * controller
+
+      * 'publishes' file then waits a certain amount of time before retrieving it
+
+
+  * terraform
+
+      * update cloud agents to upload new logs
+
+      * update testing_node to refer to gitaaron repo's promtail
+
+      * terminate/up all agent nodes
+
+  * filesize
+
+    * controller
+      * perform several different runs for each file size (0.05, 0.5, 5, 50 Mb) with 'retriever' in mainplayer mode
+
+    * collection
+
+      * logging should map CID to file size
+
+          * controller/agent outputs a single line with CID / size
+
+          * agent logs are made available to analysis (uploaded to loki DB and downloaded)
+
+            * `promtail config` includes `agent.log`
+
+            * `download_logs.py` downloads `agent.log` along with `all.log`
+
+      * analysis
+
+            * reads both logs to generate parsed files from both `agent` and `ipfs` logs
+
+            * parses agent log and updates retrieval model with file size
+
+
+# Oct. 3
 * analysis
 
   * include region breakdown trends for other phases besides total duration (excluding 'initiated')

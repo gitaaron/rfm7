@@ -1,3 +1,13 @@
+# Oct. 11, 2022
+
+* calcuating avg. total retrieval duration by filesize
+
+  * low confidence in results since there seems to be no correlation between fetch duration and file size
+
+* plotting a histogram of avg. total retrieval duration by agent uptime
+
+  * also seems to have no correlation
+
 # Sep. 29, 2022
 
 The following quick stats were generated on a 4 hour period.

@@ -1,71 +1,67 @@
 # Next
 
+  * add some simulated logs and tests for analysis to validate calculations
+
+  * analysis of retrieval duration vs publish age (how long a file was published for before it was retrieved)
+
+  * certain plots / stats should be calculated with filesize / num providers held as constant
+
+  * do plots for last 4 hours along with since start of time
+
+---
+
 * factors
 
-  * filesize
-
-    * collection
-
-      * logging should map CID to file size
-
-          * controller/agent outputs a single line with CID / size
-
-
-          * agent logs are made available to analysis (uploaded to loki DB and downloaded)
-
-            * `promtail config` includes `agent.log`
-
-            * `download_logs.py` downloads `agent.log` along with `all.log`
-
----
-
-            * analysis parses new filename to create proper regions
-
-          * update cloud agents to upload new logs
-
-            * terraform
-
-              * update testing_node to refer to gitaaron repo's promtail
-
-
-      * controller should perform several different runs for each file size (0.5, 5, 50 Mb) with 'retriever' in mainplayer mode
-
----
-
-      * terraform
-          * terminate/up all agent nodes
+  * agent uptime (uptime of the requesting peers being live in the network)
 
     * analysis
 
-      * update `log_parse,plot_all,quick_stats` to look for new `ipfs_region.log` name
-        * `ipfs_region.py` should be parsed first
-        * `agent_region.py` should be parsed after so that it can find the retrieval model to update with file-size
+      * in `generate_*_parsed_log_files`
 
-      * log parsing should populate 'retrieval model' with file size
+        * load `agent_info` and all agent logs files
 
-        * retrieval model should have a 'file size' field (default to 0.5 Mb)
+        * for each agent log file
 
-        * for each region
+        * parse for `start_times`
 
-            * load both ipfs and agent logs
+        * update `model_agent` with a list of `start_times`
 
-            * read agent log and update to retrieval with corresponding CID
+        * add a `latest_start_time_from(reference_time)` -> gives the latest time that does not exceed the referenc_time
 
-      * plot all trends for each file size
+      * each retrieval has an `agent_started_at` field
 
-      * breakdown of bar charts for phase duration with three buckets (one for each file size)
+        * when a retrieval is created 
 
-      * create 'phase' pie chart for each possible filesize
-        * ensure 'val' in pie chart is average instead of total (that should be explained somewhere)
+            * find `agent_started_at`
 
-    * report
+              * find agent by region
 
-        * is there any inconsistency between file size and any retrieval latency graphs?
+                  * 'Agents' has as 'lookup_by_region' method
 
-        * expect: other steps besides 'fetching' should stay constant and 'fetching' should increase linearly with file size
+              * invoke `latest_start_time_from(retrieval_started_at)`
 
+            * pass in `agent_started_at` as a param to constructor
 
-  * uptime of the requesting peers being live in the network
+              * should accept a None type
+
+        * add an `agent_uptime` field that calculates difference between `retrieval_started_at` and `agent_started_at`
+
+      * calculate
+
+        * max / min agent uptime in completed retrievals
+
+        * num retrievals in various 'agent uptime' buckets
+
+          * 0-60 min. spaced by 10 min.
+
+          * 0-4 hrs. spaced by 1 hour
+
+      * plot
+
+        * for each phase
+
+          * agent uptime in buckets (x-axis) and duration (y-axis)
+
 
     * report
 
@@ -81,19 +77,78 @@
 
       * histogram plot: average duration of each phase for different uptime buckets based on a 5 min. increment
 
-  * how long a file has been published for
+
+  * how long a file has been published for ('publish age')
 
     * analysis
 
-      * for each phase a trend with a breakdown of 'publish age'
+      * calculate 'publish age' = difference of first publish end time and retrieval start time
 
-  * geographic proxomity
+        * need a way to correlate between a publish and a retrieve
 
-    * see what happens when nodes are in the same region
+          * since new CIDs are created for each `DoRun`
 
-  * popularity
+            * in `LogFile.parse`
 
-  * node health stats (uptime/memory)
+              * create a 'Runs' model
+
+                * map[CID:Run]
+
+                  * Run
+
+                    * first_publish
+
+                    * list of publishes
+
+              * when creating a new Publish
+
+                  * update 'Runs' with new publish event
+
+            * in `Runs` model
+
+                * implement a `first_publish_date(CID)`
+
+            * in LogFile.parse
+
+              * when creating a new Retrieval or Publish
+
+              * update Run 'publishers' and 'retrievals' list accordingly
+
+          * in `helpers/calc` implement a `publish_age(retrieval, runs)`
+
+    * analysis
+
+      * quick stat
+
+        * average/min/max publish age
+
+        * average retrieval duration of average/min/max publish ages
+
+      * plot
+        * a cdf for each phase of retrieval duration with a breakdown of 'publish age'
+
+  * agent health stats (`load_avg/memory`)
+
+    * report
+
+      * are there any anomolies in any of the `health stats`
+
+      * how does any anomology effect total duration of retrieval
+
+  * filesize
+
+    * analysis
+
+      * plot
+
+        * breakdown of bar charts for phase duration with three buckets (one for each file size)
+
+        * create 'phase' pie chart for each possible filesize
+
+        * ensure 'val' in pie chart is average instead of total (that should be explained somewhere)
+
+      * other charts may need to be filtered on filesize and num publishes
+
 
 * share page
 
@@ -102,6 +157,36 @@
   * include `quick_stats`
 
   * plot certain `quick_stat` trends since beginning of time
+
+--- before tuesday
+
+* error messages
+    * analysis
+
+      * look into error statement
+
+        ```
+          not using peer QmZ3eUjBqpCe8tFX2Uc2QR2bmRgnvrgiADHeMkxBNAjs41 (go-ipfs/0.8.0/48f94e2) for cid Qmbe6f2sNtYGjjuCsxtDm17kCVBcgsFmnbGWAAHhVkGUDS
+          Multiple publications going on: QmZ3eUjBqpCe8tFX2Uc2QR2bmRgnvrgiADHeMkxBNAjs41 (go-ipfs/0.8.0/48f94e2) using CID: QmdfAqTyGSi3Nhce9GBDDzXigyJN4ZXEwVuwE4CxTxwTjr - Qmbe6f2sNtYGjjuCsxtDm17kCVBcgsFmnbGWAAHhVkGUDS QmdfAqTyGSi3Nhce9GBDDzXigyJN4ZXEwVuwE4CxTxwTjr
+        ```
+
+  * `controller`
+    * investigate the following error -
+      ```
+      2022-10-06T18:05:28.378Z        INFO    controller      simplenode/simplenode.go:76     Response of disconnection from http://node1:3031 is: + /app/kubo/cmd/ipfs/ipfs swarm peers
+      ```
+
+
+* controller
+
+  * if running main loop from run.sh then delayed run will not completed
+
+  * each run takes way too long
+
+    * decrease number of loops for 'perform small' to 2
+
+    * remove loop logic from `run.sh` and move it back to controller
+
 
 * analysis
 
@@ -112,6 +197,8 @@
 * final report
 
   * check out other final reports in network measurements repo
+
+--- Monday
 
 ---
 
@@ -187,3 +274,4 @@
       * there is also an 'ipfs design questions' in keep
 
   * include a complete list of regions or availability zones that probes are deployed to
+

@@ -1,5 +1,22 @@
 # Next
 
+  * 'Start listening at' log mechanism is not consistent with others
+
+  * aws costs
+
+    * remove timeout to avoid waste of ec2
+
+    * reduce data transfer
+
+      * is it coming from logging or file transfer?
+
+        * if logging then reduce logging footprint to only necessary data
+
+        * if file transfer then perform experiments with smaller file size more often
+
+
+  * fix add `analysis` tests
+
   * calculate 'proximity' based on IP address instead of AWS region
 
   * add 'test' cmd line arg to 'generate-share' and if set:
